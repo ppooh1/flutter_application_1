@@ -79,6 +79,7 @@ class _GraphicModeTicTacToeState extends State<GraphicModeTicTacToe> {
   void _onTileTapped(int row, int col) {
     if (!controller.isGameOver && controller.board.getPlayer(row, col) == Player.None) {
       setState(() {
+       
         controller.playTurn(row, col);
       });
     }

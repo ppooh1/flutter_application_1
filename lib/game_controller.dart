@@ -47,16 +47,40 @@ class GameController {
   void playTurn(int row, int col) {
     if (board.getPlayer(row, col) == Player.None && winner == Player.None) {
       board.setPlayer(row, col, currentPlayer);
-
+      
+      
       if (checkWinner(row, col)) {
         winner = currentPlayer;
       } else {
+        
         currentPlayer = currentPlayer == Player.X ? Player.O : Player.X;
+
       }
     }
   }
-
-
+  void checkBoard(int row, int col){
+    if (board.board[row][0]== currentPlayer &&
+        board.board[row][1]== currentPlayer){
+          board.board[row][0] == Player.None;
+          board.board[row][1] == Player.None;
+        }
+    if (board.board[row][2]== currentPlayer &&
+        board.board[row][1]== currentPlayer){
+          board.board[row][2] == Player.None;
+          board.board[row][1] == Player.None;
+        }
+    if (board.board[col][2]== currentPlayer &&
+        board.board[col][1]== currentPlayer){
+          board.board[col][2] == Player.None;
+          board.board[col][1] == Player.None;
+        }
+    if (board.board[col][0]== currentPlayer &&
+        board.board[col][1]== currentPlayer){
+          board.board[col][0] == Player.None;
+          board.board[col][1] == Player.None;
+        }
+  }
+  
   bool checkWinner(int row, int col) {
     // Check row
     if (board.board[row][0] == currentPlayer &&
@@ -64,7 +88,7 @@ class GameController {
         board.board[row][2] == currentPlayer) {
       return true;
     }
-
+    
     // Check column
     if (board.board[0][col] == currentPlayer &&
         board.board[1][col] == currentPlayer &&

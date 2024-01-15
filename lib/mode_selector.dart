@@ -15,6 +15,7 @@ class _GameModeSelectorState extends State<GameModeSelector> {
     return Scaffold(
       appBar: AppBar(title: Text('Select Game Mode')),
       body: Center(
+        
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

@@ -65,11 +65,7 @@ class _GraphicModeTicTacToeState extends State<GraphicModeTicTacToe> {
         ],
       ),
       floatingActionButton: FloatingActionButton( // Reset game button
-        onPressed: () {
-          setState(() {
-            controller.resetGame();
-          });
-        },
+        onPressed: () => _ontapundo(row, col),
         child: Icon(Icons.refresh),
         backgroundColor: Colors.deepPurple,
       ),
@@ -81,6 +77,13 @@ class _GraphicModeTicTacToeState extends State<GraphicModeTicTacToe> {
       setState(() {
        
         controller.playTurn(row, col);
+      });
+    }
+  }
+  void _ontapundo(int row,int col){
+    if (!controller.isGameOver){
+      setState((){
+        controller.undo(row, col);
       });
     }
   }
@@ -138,11 +141,12 @@ class _GraphicModeTicTacToeState extends State<GraphicModeTicTacToe> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  controller.resetGame();
+                  
                 });
               },
               child: Text('Restart Game'),
             ),
+            
           ],
         ),
       ),

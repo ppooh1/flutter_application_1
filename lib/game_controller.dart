@@ -1,8 +1,8 @@
 import 'dart:math';
 
 enum Player { X, O, None }
-List lastmoveX = [];
-List lastmoveO = [];
+List lastmove = [];
+List redo_ = []  ;
 class GameBoard {
   
   late List<List<Player>> board;
@@ -26,12 +26,12 @@ class GameBoard {
     if (board[row][col] == Player.None) {
       board[row][col] = player;
       if (board[row][col] == Player.O){
-        lastmoveO.add(row);
-        lastmoveO.add(col);
+        lastmove.add(row);
+        lastmove.add(col);
       }
       if (board[row][col] == Player.X){
-        lastmoveX.add(row);
-        lastmoveX.add(col);
+        lastmove.add(row);
+        lastmove.add(col);
       }
 
     }
@@ -59,19 +59,33 @@ class GameController {
     var random = Random();
     currentPlayer = random.nextBool() ? Player.X : Player.O;
   }
-  void undo(int row,int col){
-    if (!board.isFull()){
-      if(currentPlayer == Player.X){
-        board.board[row][lastmoveX[-1]] == Player.None;
-        board.board[col][lastmoveX[-2]] == Player.None;
-        }
-      if(currentPlayer == Player.O){
-        board.board[row][lastmoveO[-1]] == Player.None;
-        board.board[col][lastmoveO[-2]] == Player.None;
-      }
+  void undo(){
+  if (!board.isFull()){
+    if(lastmove.isNotEmpty){
+      
+      int col = lastmove.removeLast();
+      int row = lastmove.removeLast();
+      redo_.add(row);
+      redo_.add(col);
+      board.board[row][col] = Player.None;
+      currentPlayer = currentPlayer == Player.X ? Player.O : Player.X;
 
+    }
+  
+  }
+}
+  void redo(){
+    if (!board.isFull()){
+      if(redo_.isNotEmpty){
+        int col = redo_.removeLast();
+        int row = redo_.removeLast();
+        lastmove.add(row);  
+        lastmove.add(col);
+        board.board[row][col] = currentPlayer;
+        currentPlayer = currentPlayer == Player.X ? Player.O : Player.X;
       }
     }
+  }
   
   void playTurn(int row, int col) {
     if (board.getPlayer(row, col) == Player.None && winner == Player.None) {
@@ -79,7 +93,7 @@ class GameController {
 
       board.setPlayer(row, col, currentPlayer);
       
-      checkBoard(row, col);
+      
 
       
       
@@ -96,6 +110,7 @@ class GameController {
         board.board[row][1]== currentPlayer){
           board.board[row][0] = Player.None;
           board.board[row][1] = Player.None;
+          
         }
     if (board.board[row][2]== currentPlayer &&
         board.board[row][1]== currentPlayer){

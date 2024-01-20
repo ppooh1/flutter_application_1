@@ -28,6 +28,8 @@ class _GraphicModeTicTacToeState extends State<GraphicModeTicTacToe> {
         title: Text('Graphic Mode Tic-Tac-Toe - Player ${controller.currentPlayer.toString().split('.').last}\'s Turn'),
         centerTitle: true,
         backgroundColor: Colors.deepPurple, // Changed to a deep purple color
+        
+        
       ),
       body: Stack(
         children: [
@@ -55,6 +57,7 @@ class _GraphicModeTicTacToeState extends State<GraphicModeTicTacToe> {
                       child: Center(
                         child: _buildPlayerSymbol(controller.board.getPlayer(row, col)), // Custom method for player symbols
                       ),
+                    
                     ),
                   );
                 },
@@ -63,14 +66,40 @@ class _GraphicModeTicTacToeState extends State<GraphicModeTicTacToe> {
           ),
           if (controller.isGameOver) _buildGameOverOverlay(), // This will show the overlay when game is over
         ],
-      ),
-      floatingActionButton: FloatingActionButton( // Reset game button
-        onPressed: () => _ontapundo(row, col),
-        child: Icon(Icons.refresh),
-        backgroundColor: Colors.deepPurple,
-      ),
+      ),  
+
+         floatingActionButton: Stack(
+      children: <Widget>[
+        Positioned(
+          bottom: 50.0,
+          right: 10.0,
+          child: FloatingActionButton(
+            onPressed: _ontapundo,
+            tooltip: 'Increment',
+            child: const Icon(Icons.undo),
+          ),
+        ),
+        Positioned(
+          bottom: 150.0,
+          right: 10.0,
+          child: FloatingActionButton(
+            onPressed: _ontapredo, 
+              
+              // Your action for this button
+            
+            tooltip: 'Another Action',
+            child: const Icon(Icons.redo),
+          ),
+
+        ),
+
+      ],
+    ),
     );
+
   }
+          
+
 
   void _onTileTapped(int row, int col) {
     if (!controller.isGameOver && controller.board.getPlayer(row, col) == Player.None) {
@@ -80,10 +109,17 @@ class _GraphicModeTicTacToeState extends State<GraphicModeTicTacToe> {
       });
     }
   }
-  void _ontapundo(int row,int col){
+  void _ontapundo(){
     if (!controller.isGameOver){
       setState((){
-        controller.undo(row, col);
+        controller.undo();
+      });
+    }
+  }
+  void _ontapredo(){
+    if (!controller.isGameOver){
+      setState((){
+        controller.redo();
       });
     }
   }
